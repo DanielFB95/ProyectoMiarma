@@ -1,14 +1,14 @@
 package com.trianasalesianos.dam.Miarma.security;
 
-import com.salesianostriana.dam.RealEstate.models.Vivienda;
-import com.salesianostriana.dam.RealEstate.security.dto.JwtUserDtoConverter;
-import com.salesianostriana.dam.RealEstate.security.dto.LoginDto;
-import com.salesianostriana.dam.RealEstate.security.jwt.JwtProvider;
-import com.salesianostriana.dam.RealEstate.users.dto.CreateUserEntityDto;
-import com.salesianostriana.dam.RealEstate.users.dto.GetUserEntityDto;
-import com.salesianostriana.dam.RealEstate.users.dto.UserEntityDtoConverter;
-import com.salesianostriana.dam.RealEstate.users.model.UserEntity;
-import com.salesianostriana.dam.RealEstate.users.service.UserEntityService;
+import com.trianasalesianos.dam.Miarma.models.Publicaciones;
+import com.trianasalesianos.dam.Miarma.models.UserEntity;
+import com.trianasalesianos.dam.Miarma.models.dto.ConvertersDto.UserEntityDtoConverter;
+import com.trianasalesianos.dam.Miarma.models.dto.CreatesDto.CreateUserEntityDto;
+import com.trianasalesianos.dam.Miarma.models.dto.GetsDto.GetUserEntityDto;
+import com.trianasalesianos.dam.Miarma.security.dto.JwtUserDtoConverter;
+import com.trianasalesianos.dam.Miarma.security.dto.LoginDto;
+import com.trianasalesianos.dam.Miarma.security.jwt.JwtProvider;
+import com.trianasalesianos.dam.Miarma.services.UserEntityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,7 +52,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "401",
                     description = "No tiene permiso para realizar esta acción.",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Vivienda.class))})})
+                            schema = @Schema(implementation = Publicaciones.class))})})
     @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody LoginDto loginDto){
 
@@ -90,12 +90,13 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "401",
                     description = "No tiene permiso para realizar esta acción.",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Vivienda.class))})})
+                            schema = @Schema(implementation = Publicaciones.class))})})
     @GetMapping("/me")
     public ResponseEntity<?> me(@AuthenticationPrincipal UserEntity user){
         return ResponseEntity.ok(jwtUserDtoConverter.userToJwtUserResponse(user,null));
     }
 
+    /*
     @Operation(summary = "Registra un nuevo propietario.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
@@ -110,68 +111,11 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "401",
                     description = "No tiene permiso para realizar esta acción.",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Vivienda.class))})})
+                            schema = @Schema(implementation = Publicaciones.class))})})
     @PostMapping("/register/user")
-    public ResponseEntity<GetUserEntityDto> nuevoPropietario(@RequestBody CreateUserEntityDto nuevoPropietario){
+    public ResponseEntity<GetUserEntityDto> nuevoPropietario(@RequestBody CreateUserEntityDto nuevoUsuario){
 
-        UserEntity user = userEntityService.savePropietario(nuevoPropietario);
-
-        if(user == null){
-            return ResponseEntity.badRequest().build();
-        }else{
-            return ResponseEntity.ok(userEntityDtoConverter.UserEntityToGetUserEntityDto(user));
-        }
-    }
-
-
-    @Operation(summary = "Registra un nuevo administrador.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se han registrado un administrador.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserEntity.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha registrado ningún administrador.",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserEntity.class))})
-            ,
-            @ApiResponse(responseCode = "401",
-                    description = "No tiene permiso para realizar esta acción.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Vivienda.class))})})
-    @PostMapping("/register/admin")
-    public ResponseEntity<GetUserEntityDto> nuevoAdmin(@RequestBody CreateUserEntityDto nuevoAdmin){
-
-        UserEntity user = userEntityService.saveAdmin(nuevoAdmin);
-      
-          if(user == null){
-            return ResponseEntity.badRequest().build();
-        }else{
-            return ResponseEntity.ok(userEntityDtoConverter.UserEntityToGetUserEntityDto(user));
-        }
-    }
-
-
-    @Operation(summary = "Registra un nuevo gestor.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se han registrado un gestor.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserEntity.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha registrado ningún gestor.",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserEntity.class))})
-            ,
-            @ApiResponse(responseCode = "401",
-                    description = "No tiene permiso para realizar esta acción.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Vivienda.class))})})
-    @PostMapping("/register/gestor")
-    public ResponseEntity<GetUserEntityDto> nuevoGestor(@RequestBody CreateUserEntityDto nuevoGestor){
-
-        UserEntity user = userEntityService.saveGestor(nuevoGestor);
-
+        UserEntity user = userEntityService.saveUser(nuevoUsuario);
 
         if(user == null){
             return ResponseEntity.badRequest().build();
@@ -179,6 +123,6 @@ public class AuthenticationController {
             return ResponseEntity.ok(userEntityDtoConverter.UserEntityToGetUserEntityDto(user));
         }
     }
-
+    */
 
 }

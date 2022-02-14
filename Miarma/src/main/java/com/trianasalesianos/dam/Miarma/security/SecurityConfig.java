@@ -1,7 +1,6 @@
 package com.trianasalesianos.dam.Miarma.security;
-
-import com.salesianostriana.dam.RealEstate.security.jwt.JwtAccesDeniedHandler;
-import com.salesianostriana.dam.RealEstate.security.jwt.JwtAuthorizationFilter;
+import com.trianasalesianos.dam.Miarma.security.jwt.JwtAccesDeniedHandler;
+import com.trianasalesianos.dam.Miarma.security.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

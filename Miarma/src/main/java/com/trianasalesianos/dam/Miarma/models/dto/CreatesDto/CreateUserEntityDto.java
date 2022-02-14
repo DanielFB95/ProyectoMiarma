@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateUserEntity {
+public class CreateUserEntityDto {
 
     private String nick;
     private String email;

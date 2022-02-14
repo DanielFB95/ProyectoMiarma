@@ -1,6 +1,6 @@
 package com.trianasalesianos.dam.Miarma.security.jwt;
 
-import com.salesianostriana.dam.RealEstate.users.model.UserEntity;
+import com.trianasalesianos.dam.Miarma.models.UserEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -52,8 +52,7 @@ public class JwtProvider {
                 .setHeaderParam("typ", TOKEN_TYPE)
                 .setSubject(user.getId().toString())
                 .setIssuedAt(tokenExpirationDate)
-                .claim("nombre", user.getNombre())
-                .claim("rol",user.getRol().name())
+                .claim("nombre", user.getNick())
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
                 .compact();
     }

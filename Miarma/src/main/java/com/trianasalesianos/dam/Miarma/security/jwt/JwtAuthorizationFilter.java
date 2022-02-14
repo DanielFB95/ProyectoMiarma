@@ -1,7 +1,6 @@
 package com.trianasalesianos.dam.Miarma.security.jwt;
-
-import com.salesianostriana.dam.RealEstate.users.model.UserEntity;
-import com.salesianostriana.dam.RealEstate.users.service.UserEntityService;
+import com.trianasalesianos.dam.Miarma.models.UserEntity;
+import com.trianasalesianos.dam.Miarma.services.UserEntityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,12 +46,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 UUID userId = jwtProvider.getUserIdFromJwt(token);
 
                 Optional<UserEntity> userEntity = userEntityService.findById(userId);
+
                 if (userEntity.isPresent()){
 
                     UserEntity user = userEntity.get();
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             user,
-                            user.getRol(),
                             user.getAuthorities()
                     );
 
