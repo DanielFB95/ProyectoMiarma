@@ -1,12 +1,12 @@
 package com.trianasalesianos.dam.Miarma.services;
 
-import com.trianasalesianos.dam.Miarma.models.FileResponse;
 import com.trianasalesianos.dam.Miarma.models.dto.CreatesDto.CreateUserEntityDto;
 import com.trianasalesianos.dam.Miarma.services.base.BaseService;
 import com.trianasalesianos.dam.Miarma.models.UserEntity;
 import com.trianasalesianos.dam.Miarma.repositories.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service

@@ -12,6 +12,6 @@ public class CreatePublicacionDto {
     private String titulo;
     private String texto;
     private boolean publicPost;
-    private UserEntity user;
+    private String userEmail;
 
 }

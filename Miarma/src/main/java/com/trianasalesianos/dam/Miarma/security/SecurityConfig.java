@@ -45,25 +45,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/auth/login").anonymous()
-                    .antMatchers(HttpMethod.POST, "/auth/register/user").permitAll()
-                    .antMatchers(HttpMethod.POST, "/auth/register/admin").anonymous()
-                    .antMatchers(HttpMethod.POST, "/auth/register/gestor").hasRole("ADMIN")
-                    .antMatchers(HttpMethod.GET, "/propietario/").authenticated()
-                    .antMatchers(HttpMethod.GET, "propietario/{id}").hasAnyRole("ADMIN","PROPIETARIO")
-                    .antMatchers(HttpMethod.DELETE, "propietario/{id}").hasAnyRole("ADMIN","PROPIETARIO")
-                    .antMatchers(HttpMethod.GET, "/vivienda/").hasRole("PROPIETARIO")
-                    .antMatchers(HttpMethod.POST,"/vivienda/").hasRole("PROPIETARIO")
-                    .antMatchers(HttpMethod.GET,"/vivienda/{id}").authenticated()
-                    .antMatchers(HttpMethod.PUT, "/vivienda/{id}").hasAnyRole("ADMIN","PROPIETARIO")
-                    .antMatchers(HttpMethod.DELETE, "/vivienda/{id}").hasAnyRole("ADMIN","PROPIETARIO")
-                    .antMatchers(HttpMethod.POST,"/vivienda/{id}/meinteresa").hasRole("PROPIETARIO")
-                    .antMatchers(HttpMethod.DELETE, "/vivienda/{id}/meinteresa/{id2}").hasAnyRole("ADMIN","PROPIETARIO")
-                    .antMatchers(HttpMethod.POST, "/inmobiliaria/").hasRole("ADMIN")
-                    .antMatchers(HttpMethod.GET, "/inmobiliaria/").authenticated()
-                    .antMatchers(HttpMethod.GET, "/inmobiliaria/{id}").authenticated()
-                    .antMatchers(HttpMethod.DELETE,"/inmobiliaria/{id}").hasRole("ADMIN");
+                .antMatchers(HttpMethod.POST,"/auth/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                .antMatchers(HttpMethod.GET,"/auth/me").permitAll()
+                .antMatchers(HttpMethod.POST,"/post/").permitAll();
 
+        /*
+                .antMatchers(HttpMethod.POST, "/auth/login").anonymous()
+                .antMatchers(HttpMethod.POST, "/auth/register/user").permitAll()
+                .antMatchers(HttpMethod.GET, "/propietario/").authenticated()
+                .antMatchers(HttpMethod.GET, "propietario/{id}").hasAnyRole("ADMIN","PROPIETARIO")
+        */
                 //Añadir todas las peticiones dependiendo del rol que pueda acceder a la petición
 
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -16,7 +16,6 @@ public class PublicacionDtoConverter {
         return Publicacion.builder()
                 .texto(createPublicacionDto.getTexto())
                 .titulo(createPublicacionDto.getTitulo())
-                .usuario(createPublicacionDto.getUser())
                 .publicPost(createPublicacionDto.isPublicPost())
                 .build();
     }

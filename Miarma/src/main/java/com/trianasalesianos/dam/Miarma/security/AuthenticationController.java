@@ -110,7 +110,6 @@ public class AuthenticationController {
                     description = "No tiene permiso para realizar esta acción.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserEntity.class))})})
-
     @PostMapping("/register")
     public ResponseEntity<GetUserEntityDto> register(@RequestPart("user")CreateUserEntityDto newUser, @RequestPart("file")MultipartFile file) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userEntityDtoConverter.UserEntityToGetUserEntityDto(userEntityService.register(newUser, file)));

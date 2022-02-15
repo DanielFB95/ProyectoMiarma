@@ -82,4 +82,10 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public void addPublicacion(Publicacion p){
+        p.setUsuario(this);
+        listaPublicaciones.add(p);
+    }
 }
+
