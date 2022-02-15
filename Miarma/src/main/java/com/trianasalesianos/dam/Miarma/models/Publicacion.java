@@ -8,7 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Entity
-public class Publicaciones {
+public class Publicacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +16,8 @@ public class Publicaciones {
     private String titulo;
     private String texto;
     private boolean publicPost;
+    private String url;
+    private String urlEscalada;
 
     @ManyToOne
     @MapsId("user_id")

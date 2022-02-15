@@ -12,7 +12,7 @@ public class UserEntityDtoConverter {
                 .nick(userEntity.getNick())
                 .email(userEntity.getEmail())
                 .fechaNacimiento(userEntity.getFechaNacimiento())
-                .avatar(userEntity.getAvatar())
+                .avatar(userEntity.getUrlAvatar())
                 .build();
 
     }

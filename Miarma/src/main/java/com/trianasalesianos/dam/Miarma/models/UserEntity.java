@@ -1,7 +1,5 @@
 package com.trianasalesianos.dam.Miarma.models;
 
-import com.trianasalesianos.dam.Miarma.models.FileResponse;
-import com.trianasalesianos.dam.Miarma.models.Publicaciones;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,12 +39,14 @@ public class UserEntity implements UserDetails {
     private String password;
     private LocalDateTime fechaNacimiento;
     private boolean publicProfile;
-    private String avatar;
+    private String urlAvatar;
 
     @Builder.Default
     @OneToMany(mappedBy = "usuario", cascade = {CascadeType.REMOVE})
-    private List<Publicaciones> listaPublicaciones = new ArrayList<>();
+    private List<Publicacion> listaPublicaciones = new ArrayList<>();
 
+    @ManyToMany
+    private List<UserEntity> listaSeguidores;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

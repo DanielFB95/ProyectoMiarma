@@ -1,6 +1,6 @@
 package com.trianasalesianos.dam.Miarma.security;
 
-import com.trianasalesianos.dam.Miarma.models.Publicaciones;
+
 import com.trianasalesianos.dam.Miarma.models.UserEntity;
 import com.trianasalesianos.dam.Miarma.models.dto.ConvertersDto.UserEntityDtoConverter;
 import com.trianasalesianos.dam.Miarma.models.dto.CreatesDto.CreateUserEntityDto;
@@ -24,11 +24,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-@Tag(name= "Authentication", description = "Controller authentication")
+@Tag(name = "Authentication", description = "Controller authentication")
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
@@ -36,7 +39,6 @@ public class AuthenticationController {
     private final JwtUserDtoConverter jwtUserDtoConverter;
     private final UserEntityService userEntityService;
     private final UserEntityDtoConverter userEntityDtoConverter;
-
 
     @Operation(summary = "Login de un usuario.")
     @ApiResponses(value = {
@@ -47,21 +49,20 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "404",
                     description = "No se ha podido loguear el usuario.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserEntity.class))})
-            ,
+                            schema = @Schema(implementation = UserEntity.class))}),
             @ApiResponse(responseCode = "401",
                     description = "No tiene permiso para realizar esta acción.",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Publicaciones.class))})})
+                            schema = @Schema(implementation = UserEntity.class))})})
     @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody LoginDto loginDto){
 
         Authentication authentication =
                 authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                        loginDto.getEmail(),
-                        loginDto.getPassword()
-                    )
+                        new UsernamePasswordAuthenticationToken(
+                                loginDto.getEmail(),
+                                loginDto.getPassword()
+                        )
                 );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -85,44 +86,34 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "404",
                     description = "No se ha encontrado el usuario.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserEntity.class))})
-            ,
+                            schema = @Schema(implementation = UserEntity.class))}),
             @ApiResponse(responseCode = "401",
                     description = "No tiene permiso para realizar esta acción.",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Publicaciones.class))})})
+                            schema = @Schema(implementation = UserEntity.class))})})
     @GetMapping("/me")
     public ResponseEntity<?> me(@AuthenticationPrincipal UserEntity user){
         return ResponseEntity.ok(jwtUserDtoConverter.userToJwtUserResponse(user,null));
     }
 
-    /*
-    @Operation(summary = "Registra un nuevo propietario.")
+    @Operation(summary = "Registra el usuario.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Se han registrado un propietario.",
+                    description = "Se ha encontrado el usuario.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserEntity.class))}),
             @ApiResponse(responseCode = "404",
-                    description = "No se ha registrado ningún propietario.",
+                    description = "No se ha encontrado el usuario.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserEntity.class))})
-            ,
+                            schema = @Schema(implementation = UserEntity.class))}),
             @ApiResponse(responseCode = "401",
                     description = "No tiene permiso para realizar esta acción.",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Publicaciones.class))})})
-    @PostMapping("/register/user")
-    public ResponseEntity<GetUserEntityDto> nuevoPropietario(@RequestBody CreateUserEntityDto nuevoUsuario){
+                            schema = @Schema(implementation = UserEntity.class))})})
 
-        UserEntity user = userEntityService.saveUser(nuevoUsuario);
-
-        if(user == null){
-            return ResponseEntity.badRequest().build();
-        }else{
-            return ResponseEntity.ok(userEntityDtoConverter.UserEntityToGetUserEntityDto(user));
-        }
+    @PostMapping("/register")
+    public ResponseEntity<GetUserEntityDto> register(@RequestPart("user")CreateUserEntityDto newUser, @RequestPart("file")MultipartFile file) throws IOException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userEntityDtoConverter.UserEntityToGetUserEntityDto(userEntityService.register(newUser, file)));
     }
-    */
-
 }
+

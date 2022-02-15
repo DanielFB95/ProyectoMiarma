@@ -10,7 +10,7 @@ public class JwtUserDtoConverter {
         return JwtUserResponse.builder()
                 .nombre(user.getNick())
                 .email(user.getEmail())
-                .avatar(user.getAvatar())
+                .avatar(user.getUrlAvatar())
                 .email(user.getEmail())
                 .fechaNacimiento(user.getFechaNacimiento())
                 .token(jwt)

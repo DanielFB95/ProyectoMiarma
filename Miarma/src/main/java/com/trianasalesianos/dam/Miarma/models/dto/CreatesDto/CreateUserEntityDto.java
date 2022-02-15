@@ -15,7 +15,6 @@ public class CreateUserEntityDto {
     private String email;
     private LocalDateTime fechaNacimiento;
     private boolean publicProfile;
-    private FileResponse avatar;
     private String password;
     private String password2;
 
