@@ -61,5 +61,41 @@ public class PublicacionService {
                     .build();
     }
 
+    public Publicacion modificar(Long publicacionId, CreatePublicacionDto publicacionModificado, MultipartFile file) throws Exception {
+
+        Publicacion publicacion = publicacionRepository.findById(publicacionId).orElseThrow(() -> new UserPrincipalNotFoundException("Usuario no encontrado"));
+
+        String filename = storageService.store(file);
+
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/post")
+                .path(filename)
+                .toUriString();
+
+        byte[] byteImg = Files.readAllBytes(Paths.get(filename));
+        BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
+        BufferedImage scaled = Scalr.resize(original,1024);
+        String scaledFilename = storageService.store((MultipartFile) scaled);
+
+        String uriScaled = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/post")
+                .path(scaledFilename)
+                .toUriString();
+
+        //Hay que borrar el archivo que se va a sustituir
+
+        publicacion = Publicacion.builder()
+                .texto(publicacionModificado.getTexto())
+                .titulo(publicacionModificado.getTitulo())
+                .publicPost(publicacion.isPublicPost())
+                .url(uri)
+                .urlEscalada(uriScaled)
+                .build();
+
+        publicacionRepository.save(publicacion);
+
+        return publicacion;
+    }
+
 }
 

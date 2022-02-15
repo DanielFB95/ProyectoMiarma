@@ -24,20 +24,172 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/fernandez.bedan20/Desktop/2DAM/AD-PSP/Proyectos/SubidaArchivos/texto.txt"
+									"src": "/E:/Desktop/DAM/2DAM/SGE/Práctica02_OdooConfig/Screenshot_1.png"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8080/auth/register",
+							"raw": "http://localhost:9000/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "9000",
 							"path": [
 								"auth",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"fernandez.bedan20@triana.salesianos.edu\",\r\n    \"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/auth/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Publicación",
+			"item": [
+				{
+					"name": "Nueva publicación",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "publicacion",
+									"value": "{\n    \"titulo\": \"publicacion01\",\n    \"texto\": \"Esta es mi primera publicación\",\n    \"publicPost\": true,\n    \"userEmail\": \"fernandez.bedan20@triana.salesianos.edu\"\n}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/E:/Desktop/DAM/2DAM/SGE/Práctica02_OdooConfig/Screenshot_1.png"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/post/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"post",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar publicación",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "publicacion",
+									"value": "{\n    \"titulo\": \"PUBLICACIÓN EDITADA\",\n    \"texto\": \"TEXTO EDITADO\",\n    \"publicPost\": false,\n    \"userEmail\": \"fernandez.bedan20@triana.salesianos.edu\"\n}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/E:/Desktop/DAM/2DAM/SGE/Práctica02_OdooConfig/Screenshot_3.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:9000/post/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"post",
+								"1"
 							]
 						}
 					},
