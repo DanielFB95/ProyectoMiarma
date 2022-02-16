@@ -40,7 +40,7 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
             String filename = storageService.store(file);
 
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/avatar/")
                 .path(filename)
                 .toUriString();

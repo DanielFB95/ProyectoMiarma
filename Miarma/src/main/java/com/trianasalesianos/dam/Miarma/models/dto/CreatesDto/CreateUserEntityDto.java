@@ -1,6 +1,5 @@
 package com.trianasalesianos.dam.Miarma.models.dto.CreatesDto;
 
-import com.trianasalesianos.dam.Miarma.models.FileResponse;
 import lombok.*;
 
 import java.time.LocalDateTime;
