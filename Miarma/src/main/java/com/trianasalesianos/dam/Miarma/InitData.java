@@ -14,9 +14,9 @@ public class InitData {
 
     private final UserEntityService userEntityService;
 
+
     @PostConstruct
     public void init(){
-
 
         userEntityService.save(UserEntity.builder()
                         .email("fernandez.bedan20@triana.salesianos.edu")

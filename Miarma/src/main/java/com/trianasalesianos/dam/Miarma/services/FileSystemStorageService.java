@@ -4,7 +4,6 @@ import com.trianasalesianos.dam.Miarma.config.StorageProperties;
 import com.trianasalesianos.dam.Miarma.exceptions.FileNotFoundException;
 import com.trianasalesianos.dam.Miarma.exceptions.StorageException;
 import com.trianasalesianos.dam.Miarma.utils.MediaTypeUrlResource;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
@@ -111,7 +110,18 @@ public class FileSystemStorageService {
 
 
     public void deleteFile(String filename) {
-        // Pendiente
+
+        try{
+            Path file = load(filename);
+            MediaTypeUrlResource resource = new MediaTypeUrlResource(file.toUri());
+            if(resource.exists() || resource.isReadable()) {
+                Files.deleteIfExists(file);
+            }
+        }catch (MalformedURLException e){
+            throw new FileNotFoundException("No se encuentra el archivo");
+        } catch (IOException e) {
+            new StorageException("No se ha encontrado el archivo");
+        }
     }
 
     public void deleteAll() {

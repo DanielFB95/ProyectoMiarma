@@ -56,7 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/propietario/").authenticated()
                 .antMatchers(HttpMethod.GET, "propietario/{id}").hasAnyRole("ADMIN","PROPIETARIO")
         */
-                //Añadir todas las peticiones dependiendo del rol que pueda acceder a la petición
 
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         http.headers().frameOptions().disable();

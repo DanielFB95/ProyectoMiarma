@@ -45,9 +45,9 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
                 .path(filename)
                 .toUriString();
 
-        byte[] byteImg = Files.readAllBytes(Paths.get(filename));
-        BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
-        BufferedImage scaled = Scalr.resize(original,128);
+        //byte[] byteImg = Files.readAllBytes(Paths.get(filename));
+        //BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
+        //BufferedImage scaled = Scalr.resize(original,128);
 
             UserEntity newUser = UserEntity.builder()
                     .nick(createUserEntityDto.getNick())

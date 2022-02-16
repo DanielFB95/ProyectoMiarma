@@ -35,4 +35,10 @@ public class PublicacionController {
         return ResponseEntity.ok().body(publicacionService.modificar(id,publicacionEditada,file));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        publicacionService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

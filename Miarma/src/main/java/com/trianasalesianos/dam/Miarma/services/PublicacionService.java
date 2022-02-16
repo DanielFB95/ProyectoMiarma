@@ -1,5 +1,6 @@
 package com.trianasalesianos.dam.Miarma.services;
 
+import com.trianasalesianos.dam.Miarma.exceptions.PublicacionNotFoundException;
 import com.trianasalesianos.dam.Miarma.models.Publicacion;
 import com.trianasalesianos.dam.Miarma.models.UserEntity;
 import com.trianasalesianos.dam.Miarma.models.dto.ConvertersDto.PublicacionDtoConverter;
@@ -65,6 +66,9 @@ public class PublicacionService {
 
         Publicacion publicacion = publicacionRepository.findById(publicacionId).orElseThrow(() -> new UserPrincipalNotFoundException("Usuario no encontrado"));
 
+        storageService.deleteFile(publicacion.getUrl());
+        storageService.deleteFile(publicacion.getUrlEscalada());
+
         String filename = storageService.store(file);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -82,8 +86,6 @@ public class PublicacionService {
                 .path(scaledFilename)
                 .toUriString();
 
-        //Hay que borrar el archivo que se va a sustituir
-
         publicacion = Publicacion.builder()
                 .texto(publicacionModificado.getTexto())
                 .titulo(publicacionModificado.getTitulo())
@@ -95,6 +97,15 @@ public class PublicacionService {
         publicacionRepository.save(publicacion);
 
         return publicacion;
+    }
+
+    public void delete(Long id){
+
+        Publicacion p = publicacionRepository.findById(id).orElseThrow(() -> new PublicacionNotFoundException("No se ha encontrado la publicación"));
+        storageService.deleteFile(p.getUrl());
+        storageService.deleteFile(p.getUrlEscalada());
+        publicacionRepository.delete(p);
+
     }
 
 }
