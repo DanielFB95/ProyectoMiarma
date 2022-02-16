@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "38da4cf7-35ce-4feb-8588-ee5b99ebc69c",
+		"_postman_id": "48d1411a-2c89-4ac4-bcca-c2eba9cdcc6e",
 		"name": "Miarma",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -18,13 +18,15 @@
 							"formdata": [
 								{
 									"key": "user",
-									"value": "{\n    \"nick\": \"DanielFB\",\n    \"email\": \"fernandez.bedan20@triana.salesianos.edu\",\n    \"fechaNacimiento\": \"22/11/1995 17:09:44\",\n    \"publicProfile\": true,\n    \"password\": \"12345\",\n    \"password2\": \"12345\"\n}",
+									"value": "{\n    \"nick\": \"DanielFB\",\n    \"email\": \"fernandez.bedan20@triana.salesianos.edu\",\n    \"fechaNacimiento\": \"1995-11-22\",\n    \"publicProfile\": true,\n    \"password\": \"12345\",\n    \"password2\": \"12345\"\n}",
+									"contentType": "application/json",
 									"type": "text"
 								},
 								{
 									"key": "file",
+									"contentType": "image/png",
 									"type": "file",
-									"src": "/E:/Desktop/DAM/2DAM/SGE/Práctica02_OdooConfig/Screenshot_1.png"
+									"src": "/C:/Users/fernandez.bedan20/Desktop/2DAM/SGE/Práctica02_OdooConfig/Screenshot_1.png"
 								}
 							]
 						},
@@ -138,12 +140,7 @@
 									"type": "file",
 									"src": "/E:/Desktop/DAM/2DAM/SGE/Práctica02_OdooConfig/Screenshot_1.png"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "http://localhost:9000/post/",
@@ -180,6 +177,26 @@
 								}
 							]
 						},
+						"url": {
+							"raw": "http://localhost:9000/post/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"post",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar publicación",
+					"request": {
+						"method": "DELETE",
+						"header": [],
 						"url": {
 							"raw": "http://localhost:9000/post/1",
 							"protocol": "http",

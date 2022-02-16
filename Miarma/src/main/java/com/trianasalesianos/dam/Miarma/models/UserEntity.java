@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +38,7 @@ public class UserEntity implements UserDetails {
     private String nick;
     private String email;
     private String password;
-    private LocalDateTime fechaNacimiento;
+    private LocalDate fechaNacimiento;
     private boolean publicProfile;
     private String urlAvatar;
 
@@ -87,5 +88,20 @@ public class UserEntity implements UserDetails {
         p.setUsuario(this);
         listaPublicaciones.add(p);
     }
+
+    /*
+    @OneToMany
+    @Builder.Default
+    List<UserEntity> listaSeguimiento = new ArrayList<>();
+
+    //Opcional: hacer que no se repita la pareja de atributos (EmbeddedID, @ManyToMany bidireccional)
+    Crear otra clase Follow{
+        @ManyToOne
+        UserEntity seguidores;
+
+        @ManyToOne
+        UserEntity seguidos;
+    }
+     */
 }
 

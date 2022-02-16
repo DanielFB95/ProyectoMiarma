@@ -76,6 +76,7 @@ public class PublicacionService {
                 .path(filename)
                 .toUriString();
 
+        /*
         byte[] byteImg = Files.readAllBytes(Paths.get(filename));
         BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
         BufferedImage scaled = Scalr.resize(original,1024);
@@ -86,12 +87,15 @@ public class PublicacionService {
                 .path(scaledFilename)
                 .toUriString();
 
+
+         */
+
         publicacion = Publicacion.builder()
                 .texto(publicacionModificado.getTexto())
                 .titulo(publicacionModificado.getTitulo())
                 .publicPost(publicacion.isPublicPost())
                 .url(uri)
-                .urlEscalada(uriScaled)
+                //.urlEscalada(uriScaled)
                 .build();
 
         publicacionRepository.save(publicacion);

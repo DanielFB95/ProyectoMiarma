@@ -45,10 +45,13 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
                 .path(filename)
                 .toUriString();
 
-        //byte[] byteImg = Files.readAllBytes(Paths.get(filename));
-        //BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
-        //BufferedImage scaled = Scalr.resize(original,128);
+        /* Poner en el FyleSystemStorageService
+        byte[] byteImg = Files.readAllBytes(Paths.get(filename));
+        BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
+        BufferedImage scaled = Scalr.resize(original,128);
 
+        ImageIO.write(scaled, "png", Files.newOutputStream(storageService.load(filename)));
+        */
             UserEntity newUser = UserEntity.builder()
                     .nick(createUserEntityDto.getNick())
                     .email(createUserEntityDto.getEmail())

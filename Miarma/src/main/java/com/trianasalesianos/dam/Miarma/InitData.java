@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
@@ -14,15 +15,17 @@ public class InitData {
 
     private final UserEntityService userEntityService;
 
-
+/*
     @PostConstruct
     public void init(){
 
         userEntityService.save(UserEntity.builder()
                         .email("fernandez.bedan20@triana.salesianos.edu")
                         .password("12345")
-                        .fechaNacimiento(LocalDateTime.now())
+                        .fechaNacimiento(LocalDate.now())
                         .nick("DanielFB")
                 .build());
     }
+
+*/
 }
