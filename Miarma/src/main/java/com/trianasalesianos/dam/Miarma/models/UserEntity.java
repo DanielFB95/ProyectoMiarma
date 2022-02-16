@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Entity
-public class UserEntity implements UserDetails {
+public class UserEntity implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -46,6 +47,12 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "usuario", cascade = {CascadeType.REMOVE})
     private List<Publicacion> listaPublicaciones = new ArrayList<>();
 
+    /*
+    @OneToMany(mappedBy = "usuarioSeguido", cascade = {CascadeType.REMOVE})
+    @Builder.Default
+    private List<UserEntity> listaSeguidores = new ArrayList<>();
+
+     */
     @ManyToMany
     private List<UserEntity> listaSeguidores;
 
@@ -89,19 +96,5 @@ public class UserEntity implements UserDetails {
         listaPublicaciones.add(p);
     }
 
-    /*
-    @OneToMany
-    @Builder.Default
-    List<UserEntity> listaSeguimiento = new ArrayList<>();
-
-    //Opcional: hacer que no se repita la pareja de atributos (EmbeddedID, @ManyToMany bidireccional)
-    Crear otra clase Follow{
-        @ManyToOne
-        UserEntity seguidores;
-
-        @ManyToOne
-        UserEntity seguidos;
-    }
-     */
 }
 

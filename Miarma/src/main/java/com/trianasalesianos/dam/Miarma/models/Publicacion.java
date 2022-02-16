@@ -3,12 +3,13 @@ package com.trianasalesianos.dam.Miarma.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Entity
-public class Publicacion {
+public class Publicacion implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
