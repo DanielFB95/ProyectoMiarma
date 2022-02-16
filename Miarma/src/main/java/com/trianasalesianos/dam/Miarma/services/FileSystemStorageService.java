@@ -1,9 +1,10 @@
 package com.trianasalesianos.dam.Miarma.services;
 
 import com.trianasalesianos.dam.Miarma.config.StorageProperties;
-import com.trianasalesianos.dam.Miarma.exceptions.FileNotFoundException;
 import com.trianasalesianos.dam.Miarma.exceptions.StorageException;
+import com.trianasalesianos.dam.Miarma.exceptions.FileNotFoundException;
 import com.trianasalesianos.dam.Miarma.utils.MediaTypeUrlResource;
+import org.imgscalr.Scalr;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
@@ -11,6 +12,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -120,12 +124,33 @@ public class FileSystemStorageService {
         }catch (MalformedURLException e){
             throw new FileNotFoundException("No se encuentra el archivo");
         } catch (IOException e) {
-            new StorageException("No se ha encontrado el archivo");
+            throw new StorageException("No se ha encontrado el archivo", e);
         }
     }
 
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    }
+
+    public BufferedImage scale(String filename){
+
+        try{
+
+            byte[] byteImg = Files.readAllBytes(Paths.get(filename));
+            BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
+            BufferedImage scaled = Scalr.resize(original,1024);
+            return scaled;
+
+        }catch (MalformedURLException e){
+
+            throw new FileNotFoundException("No se ha encontrado el archivo", e);
+
+        } catch (IOException e) {
+
+            throw new StorageException("No se ha encontrado el archivo", e);
+        }
+
+
     }
 
 }
