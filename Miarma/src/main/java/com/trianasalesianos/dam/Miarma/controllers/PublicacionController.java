@@ -30,7 +30,7 @@ public class PublicacionController {
 
     @PostMapping("/")
     public ResponseEntity<GetPublicacionDto> save(@RequestPart("publicacion")CreatePublicacionDto nuevaPublicacion,
-                                                  @RequestPart("file")MultipartFile file) throws IOException {
+                                                  @RequestPart("file")MultipartFile file, @AuthenticationPrincipal UserEntity userEntity) throws IOException {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(publicacionDtoConverter.publicacionToGetPublicacionDto(publicacionService.save(nuevaPublicacion, file)));
@@ -44,7 +44,7 @@ public class PublicacionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id, @AuthenticationPrincipal UserEntity userEntity){
         publicacionService.delete(id);
         return ResponseEntity.noContent().build();
     }

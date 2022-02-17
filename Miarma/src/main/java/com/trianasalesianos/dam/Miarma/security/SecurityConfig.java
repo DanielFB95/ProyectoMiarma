@@ -58,13 +58,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/profile/{id}").permitAll()
                 .antMatchers(HttpMethod.PUT, "/profile/me").permitAll();
 
-        /*
-                .antMatchers(HttpMethod.POST, "/auth/login").anonymous()
-                .antMatchers(HttpMethod.POST, "/auth/register/user").permitAll()
-                .antMatchers(HttpMethod.GET, "/propietario/").authenticated()
-                .antMatchers(HttpMethod.GET, "propietario/{id}").hasAnyRole("ADMIN","PROPIETARIO")
-        */
-
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         http.headers().frameOptions().disable();
 
