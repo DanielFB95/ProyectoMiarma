@@ -1,6 +1,5 @@
 package com.trianasalesianos.dam.Miarma.models.dto.CreatesDto;
 
-import com.trianasalesianos.dam.Miarma.models.UserEntity;
 import lombok.*;
 
 @Getter @Setter

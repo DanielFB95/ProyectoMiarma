@@ -43,6 +43,8 @@ public class UserEntity implements UserDetails, Serializable {
     private boolean publicProfile;
     private String urlAvatar;
 
+
+
     @Builder.Default
     @OneToMany(mappedBy = "usuario", cascade = {CascadeType.REMOVE})
     private List<Publicacion> listaPublicaciones = new ArrayList<>();
@@ -51,10 +53,25 @@ public class UserEntity implements UserDetails, Serializable {
     @OneToMany(mappedBy = "usuarioSeguido", cascade = {CascadeType.REMOVE})
     @Builder.Default
     private List<UserEntity> listaSeguidores = new ArrayList<>();
-
      */
     @ManyToMany
     private List<UserEntity> listaSeguidores;
+
+    public UserEntity(String nick, String email, String password, LocalDate fechaNacimiento, boolean publicProfile, String urlAvatar) {
+        this.nick = nick;
+        this.email = email;
+        this.password = password;
+        this.fechaNacimiento = fechaNacimiento;
+        this.publicProfile = publicProfile;
+        this.urlAvatar = urlAvatar;
+    }
+    public UserEntity(String nick, String email, String password, LocalDate fechaNacimiento, boolean publicProfile) {
+        this.nick = nick;
+        this.email = email;
+        this.password = password;
+        this.fechaNacimiento = fechaNacimiento;
+        this.publicProfile = publicProfile;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

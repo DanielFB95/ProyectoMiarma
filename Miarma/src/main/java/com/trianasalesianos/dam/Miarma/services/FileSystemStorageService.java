@@ -136,7 +136,7 @@ public class FileSystemStorageService {
 
         try{
 
-            byte[] byteImg = Files.readAllBytes(Paths.get(filename));
+            byte[] byteImg = Files.readAllBytes(rootLocation.resolve(filename));
             BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
             BufferedImage scaled = Scalr.resize(original,1024);
             return scaled;

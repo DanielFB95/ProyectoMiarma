@@ -7,6 +7,8 @@ import com.trianasalesianos.dam.Miarma.models.dto.ConvertersDto.PublicacionDtoCo
 import com.trianasalesianos.dam.Miarma.models.dto.CreatesDto.CreatePublicacionDto;
 import com.trianasalesianos.dam.Miarma.repositories.PublicacionRepository;
 import com.trianasalesianos.dam.Miarma.repositories.UserEntityRepository;
+import com.trianasalesianos.dam.Miarma.security.dto.JwtUserDtoConverter;
+import com.trianasalesianos.dam.Miarma.security.dto.JwtUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +38,7 @@ public class PublicacionService {
     private final FileSystemStorageService storageService;
     private final UserEntityRepository userEntityRepository;
     private final PublicacionDtoConverter publicacionDtoConverter;
+    private final JwtUserDtoConverter jwtUserDtoConverter;
 
     public Publicacion save(CreatePublicacionDto createPublicacionDto, MultipartFile file) throws IOException {
 
@@ -47,9 +50,8 @@ public class PublicacionService {
                 .toUriString();
 
         BufferedImage scaled = storageService.scale(filename);
-        File outputfile = new File("../upload/imgEscalada.png");
-        ImageIO.write(scaled, "jpg", outputfile);
-
+        File outputfile = new File("./upload/"+filename+"1028.png");
+        ImageIO.write(scaled, "png", outputfile);
         String filenameScaled = StringUtils.cleanPath(outputfile.getName());
 
         String uriScaled = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -67,7 +69,7 @@ public class PublicacionService {
                     .texto(createPublicacionDto.getTexto())
                     .publicPost(createPublicacionDto.isPublicPost())
                     .url(uri)
-                    .urlEscalada(uriScaled)
+                    //.urlEscalada(uriScaled)
                     .build();
     }
 
@@ -86,16 +88,14 @@ public class PublicacionService {
                 .toUriString();
 
         /*
-        byte[] byteImg = Files.readAllBytes(Paths.get(filename));
-        BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
-        BufferedImage scaled = Scalr.resize(original,1024);
-        String scaledFilename = storageService.store((MultipartFile) scaled);
-
+        BufferedImage scaled = storageService.scale(filename);
+        File outputfile = new File("../upload/imgEscalada.png");
+        ImageIO.write(scaled, "png", outputfile);
+        String filenameScaled = StringUtils.cleanPath(outputfile.getName());
         String uriScaled = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/post")
-                .path(scaledFilename)
+                .path(filenameScaled)
                 .toUriString();
-
 
          */
 
@@ -146,6 +146,12 @@ public class PublicacionService {
                     .filter(p -> p.isPublicPost() == true)
                     .collect(Collectors.toList());
         }
+
+    }
+
+    public List<Publicacion> getAllPostOfUser(UserEntity userEntity){
+
+        return jwtUserDtoConverter.userToJwtUserResponse(userEntity,null).getLista();
 
     }
 

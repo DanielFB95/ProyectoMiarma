@@ -13,6 +13,7 @@ public class JwtUserDtoConverter {
                 .avatar(user.getUrlAvatar())
                 .email(user.getEmail())
                 .fechaNacimiento(user.getFechaNacimiento())
+                .lista(user.getListaPublicaciones())
                 .token(jwt)
                 .build();
     }
