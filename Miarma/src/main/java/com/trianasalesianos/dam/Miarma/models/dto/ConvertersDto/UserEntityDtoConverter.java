@@ -13,6 +13,7 @@ public class UserEntityDtoConverter {
                 .email(userEntity.getEmail())
                 .fechaNacimiento(userEntity.getFechaNacimiento())
                 .avatar(userEntity.getUrlAvatar())
+                .password(userEntity.getPassword())
                 .build();
 
     }

@@ -15,5 +15,6 @@ public class GetUserEntityDto {
     private String email;
     private LocalDate fechaNacimiento;
     private String avatar;
+    private String password;
 
 }

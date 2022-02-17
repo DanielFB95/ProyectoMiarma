@@ -1,6 +1,7 @@
 package com.trianasalesianos.dam.Miarma.services;
 
-import com.trianasalesianos.dam.Miarma.exceptions.NotPublicProfileException;
+import com.trianasalesianos.dam.Miarma.errors.exceptions.EmailNotFoundException;
+import com.trianasalesianos.dam.Miarma.errors.exceptions.NotPublicProfileException;
 import com.trianasalesianos.dam.Miarma.models.dto.CreatesDto.CreateUserEntityDto;
 import com.trianasalesianos.dam.Miarma.services.base.BaseService;
 import com.trianasalesianos.dam.Miarma.models.UserEntity;
@@ -25,7 +26,7 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.repository.findByNick(username).orElseThrow(()-> new UsernameNotFoundException(username + " no encontrado"));
+        return this.repository.findByEmailContains(username).orElseThrow(()-> new UsernameNotFoundException(username + " no encontrado"));
     }
 
     public UserEntity register(CreateUserEntityDto createUserEntityDto, MultipartFile file){
@@ -93,5 +94,13 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
         user.setUrlAvatar(uri);
         return user;
+    }
+
+    public UserEntity findByEmailContains(String email){
+        return repository.findByEmailContains(email).orElseThrow(()-> new EmailNotFoundException("No se ha encontrado el email"));
+    }
+
+    public UserEntity findByNick(String nick){
+        return repository.findByNick(nick).orElseThrow(()-> new UsernameNotFoundException("No se ha encontrado el nick: "+nick));
     }
 }

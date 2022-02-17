@@ -1,6 +1,7 @@
 package com.trianasalesianos.dam.Miarma.services;
 
-import com.trianasalesianos.dam.Miarma.exceptions.PublicacionNotFoundException;
+
+import com.trianasalesianos.dam.Miarma.errors.exceptions.PostNotFoundException;
 import com.trianasalesianos.dam.Miarma.models.Publicacion;
 import com.trianasalesianos.dam.Miarma.models.UserEntity;
 import com.trianasalesianos.dam.Miarma.models.dto.ConvertersDto.PublicacionDtoConverter;
@@ -8,9 +9,7 @@ import com.trianasalesianos.dam.Miarma.models.dto.CreatesDto.CreatePublicacionDt
 import com.trianasalesianos.dam.Miarma.repositories.PublicacionRepository;
 import com.trianasalesianos.dam.Miarma.repositories.UserEntityRepository;
 import com.trianasalesianos.dam.Miarma.security.dto.JwtUserDtoConverter;
-import com.trianasalesianos.dam.Miarma.security.dto.JwtUserResponse;
 import lombok.RequiredArgsConstructor;
-import org.imgscalr.Scalr;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,15 +18,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +30,7 @@ public class PublicacionService {
 
     private final PublicacionRepository publicacionRepository;
     private final FileSystemStorageService storageService;
-    private final UserEntityRepository userEntityRepository;
+    private final UserEntityService userEntityService;
     private final PublicacionDtoConverter publicacionDtoConverter;
     private final JwtUserDtoConverter jwtUserDtoConverter;
 
@@ -50,7 +44,7 @@ public class PublicacionService {
                 .toUriString();
 
         BufferedImage scaled = storageService.scale(filename);
-        File outputfile = new File("./upload/"+filename+"1028.png");
+        File outputfile = new File("uploads/1028_"+filename);
         ImageIO.write(scaled, "png", outputfile);
         String filenameScaled = StringUtils.cleanPath(outputfile.getName());
 
@@ -59,8 +53,7 @@ public class PublicacionService {
                 .path(filenameScaled)
                 .toUriString();
 
-        UserEntity user = userEntityRepository.findByEmail(createPublicacionDto.getUserEmail()).orElseThrow(() ->
-                new UserPrincipalNotFoundException("No se ha encontrado el email: "+createPublicacionDto.getUserEmail()));
+        UserEntity user = userEntityService.findByEmailContains(createPublicacionDto.getUserEmail());
 
         user.addPublicacion(publicacionDtoConverter.createPublicacionDtoToPublicacion(createPublicacionDto));
 
@@ -69,7 +62,7 @@ public class PublicacionService {
                     .texto(createPublicacionDto.getTexto())
                     .publicPost(createPublicacionDto.isPublicPost())
                     .url(uri)
-                    //.urlEscalada(uriScaled)
+                    .urlEscalada(uriScaled)
                     .build();
     }
 
@@ -87,24 +80,22 @@ public class PublicacionService {
                 .path(filename)
                 .toUriString();
 
-        /*
         BufferedImage scaled = storageService.scale(filename);
-        File outputfile = new File("../upload/imgEscalada.png");
+        File outputfile = new File("uploads/1028_"+filename);
         ImageIO.write(scaled, "png", outputfile);
         String filenameScaled = StringUtils.cleanPath(outputfile.getName());
+
         String uriScaled = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/post")
                 .path(filenameScaled)
                 .toUriString();
-
-         */
 
         publicacion = Publicacion.builder()
                 .texto(publicacionModificado.getTexto())
                 .titulo(publicacionModificado.getTitulo())
                 .publicPost(publicacion.isPublicPost())
                 .url(uri)
-                //.urlEscalada(uriScaled)
+                .urlEscalada(uriScaled)
                 .build();
 
         publicacionRepository.save(publicacion);
@@ -115,7 +106,7 @@ public class PublicacionService {
     public void delete(Long id){
 
         Publicacion p = publicacionRepository.findById(id).orElseThrow(() ->
-                new PublicacionNotFoundException("No se ha encontrado la publicación"));
+                new PostNotFoundException("No se ha encontrado la publicación"));
         storageService.deleteFile(p.getUrl());
         storageService.deleteFile(p.getUrlEscalada());
         publicacionRepository.delete(p);
@@ -126,9 +117,9 @@ public class PublicacionService {
     }
 
     public Publicacion getOneById(Long id, UserEntity userEntity){
-        Publicacion p = publicacionRepository.findById(id).orElseThrow(() -> new PublicacionNotFoundException("Publicación no encontrada"));
+        Publicacion p = publicacionRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Publicación no encontrada"));
         UserEntity user = publicacionRepository.findById(id)
-                .orElseThrow(()->new PublicacionNotFoundException("No se ha encontrado la publicación")).getUsuario();
+                .orElseThrow(()->new PostNotFoundException("No se ha encontrado la publicación")).getUsuario();
         if (p.isPublicPost() || userEntity.getListaSeguidores().contains(user)){
             return p;
         }
@@ -137,7 +128,7 @@ public class PublicacionService {
 
     public List<Publicacion> getAllPostByNick(String nick, UserEntity userEntity){
 
-        UserEntity user = userEntityRepository.findByNick(nick).orElseThrow(() -> new UsernameNotFoundException("No se ha encontrado al usuario por el nick: "+nick));
+        UserEntity user = userEntityService.findByNick(nick);
 
         if(userEntity.getListaSeguidores().contains(user)){
             return user.getListaPublicaciones();

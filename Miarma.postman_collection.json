@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0fcbe0b6-3622-4f4a-a79c-14b4563e84dc",
+		"_postman_id": "d14c4bf4-fd62-4675-a263-6e89465fbc95",
 		"name": "Miarma",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -26,9 +26,14 @@
 									"key": "file",
 									"contentType": "image/png",
 									"type": "file",
-									"src": "/C:/Users/fernandez.bedan20/Desktop/2DAM/SGE/Práctica02_OdooConfig/Screenshot_1.png"
+									"src": "/E:/Desktop/DAM/2DAM/SGE/Práctica02_OdooConfig/Screenshot_1.png"
 								}
-							]
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "http://localhost:9000/auth/register",
@@ -138,9 +143,9 @@
 								},
 								{
 									"key": "file",
-									"contentType": "image/png",
+									"contentType": "image/jpg",
 									"type": "file",
-									"src": "/C:/Users/fernandez.bedan20/Desktop/2DAM/SGE/Práctica02_OdooConfig/Screenshot_1.png"
+									"src": "/E:/Desktop/ProyectosClase/AD Y PSP/ProyectoMiarma/Miarma/uploads/imagen.jpg"
 								}
 							]
 						},

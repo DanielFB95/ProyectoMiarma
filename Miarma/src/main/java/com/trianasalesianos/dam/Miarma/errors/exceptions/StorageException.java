@@ -1,6 +1,6 @@
-package com.trianasalesianos.dam.Miarma.exceptions;
+package com.trianasalesianos.dam.Miarma.errors.exceptions;
 
-public class StorageException extends RuntimeException {
+public class StorageException extends RuntimeException{
 
     public StorageException(String message, Exception e) {
         super(message, e);
@@ -10,3 +10,4 @@ public class StorageException extends RuntimeException {
         super(message);
     }
 }
+

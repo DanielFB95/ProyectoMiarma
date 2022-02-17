@@ -1,8 +1,8 @@
 package com.trianasalesianos.dam.Miarma.services;
 
 import com.trianasalesianos.dam.Miarma.config.StorageProperties;
-import com.trianasalesianos.dam.Miarma.exceptions.StorageException;
-import com.trianasalesianos.dam.Miarma.exceptions.FileNotFoundException;
+import com.trianasalesianos.dam.Miarma.errors.exceptions.StorageException;
+import com.trianasalesianos.dam.Miarma.errors.exceptions.FileNotFoundException;
 import com.trianasalesianos.dam.Miarma.utils.MediaTypeUrlResource;
 import org.imgscalr.Scalr;
 import org.springframework.core.io.Resource;

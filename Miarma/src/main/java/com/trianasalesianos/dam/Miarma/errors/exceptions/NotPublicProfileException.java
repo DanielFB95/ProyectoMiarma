@@ -1,4 +1,4 @@
-package com.trianasalesianos.dam.Miarma.exceptions;
+package com.trianasalesianos.dam.Miarma.errors.exceptions;
 
 public class NotPublicProfileException extends StorageException{
     public NotPublicProfileException(String message, Exception e) {

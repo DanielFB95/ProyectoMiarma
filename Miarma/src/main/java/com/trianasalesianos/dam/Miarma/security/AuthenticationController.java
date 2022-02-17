@@ -23,11 +23,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -111,7 +114,7 @@ public class AuthenticationController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserEntity.class))})})
     @PostMapping("/register")
-    public ResponseEntity<GetUserEntityDto> register(@RequestPart("user")CreateUserEntityDto newUser,
+    public ResponseEntity<GetUserEntityDto> register(@Valid @RequestPart("user")CreateUserEntityDto newUser,
                                                      @RequestPart("file")MultipartFile file) throws IOException {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userEntityDtoConverter
