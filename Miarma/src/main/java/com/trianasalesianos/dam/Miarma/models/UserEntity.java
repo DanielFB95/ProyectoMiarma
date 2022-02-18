@@ -2,6 +2,7 @@ package com.trianasalesianos.dam.Miarma.models;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +20,8 @@ import java.util.UUID;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Entity
+@Table(name = "usuario")
+@EntityListeners(AuditingEntityListener.class)
 public class UserEntity implements UserDetails, Serializable {
 
     @Id

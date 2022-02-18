@@ -18,6 +18,7 @@ public class InitData {
     @PostConstruct
     public void init(){
 
+        /*
         UserEntity user = UserEntity.builder()
                 .nick("DanielFB")
                 .email("fernandez.bedan20@triana.salesianos.edu")
@@ -26,5 +27,7 @@ public class InitData {
                 .build();
 
         userEntityService.save(user);
+
+         */
     }
 }

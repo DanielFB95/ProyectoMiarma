@@ -142,7 +142,7 @@ public class PublicacionService {
 
     public List<Publicacion> getAllPostOfUser(UserEntity userEntity){
 
-        return jwtUserDtoConverter.userToJwtUserResponse(userEntity,null).getLista();
+        return userEntity.getListaPublicaciones();
 
     }
 

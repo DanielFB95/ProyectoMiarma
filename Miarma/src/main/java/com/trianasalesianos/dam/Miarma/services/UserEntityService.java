@@ -2,6 +2,7 @@ package com.trianasalesianos.dam.Miarma.services;
 
 import com.trianasalesianos.dam.Miarma.errors.exceptions.EmailNotFoundException;
 import com.trianasalesianos.dam.Miarma.errors.exceptions.NotPublicProfileException;
+import com.trianasalesianos.dam.Miarma.errors.exceptions.RegisterException;
 import com.trianasalesianos.dam.Miarma.models.dto.CreatesDto.CreateUserEntityDto;
 import com.trianasalesianos.dam.Miarma.services.base.BaseService;
 import com.trianasalesianos.dam.Miarma.models.UserEntity;
@@ -13,11 +14,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.UUID;
 
-@Service
+@Service("userDetailsService")
 @RequiredArgsConstructor
 public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityRepository> implements UserDetailsService {
 
@@ -29,24 +37,21 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
         return this.repository.findByEmailContains(username).orElseThrow(()-> new UsernameNotFoundException(username + " no encontrado"));
     }
 
-    public UserEntity register(CreateUserEntityDto createUserEntityDto, MultipartFile file){
+    public UserEntity register(CreateUserEntityDto createUserEntityDto, MultipartFile file) throws IOException {
 
         if(createUserEntityDto.getPassword().contentEquals(createUserEntityDto.getPassword2())){
 
             String filename = storageService.store(file);
 
-            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/avatar/")
-                .path(filename)
-                .toUriString();
+            BufferedImage scaled = storageService.scale(filename);
+            File outputfile = new File("uploads/1028_"+filename);
+            ImageIO.write(scaled, "png", outputfile);
+            String filenameScaled = StringUtils.cleanPath(outputfile.getName());
 
-            /* Poner en el FyleSystemStorageService
-            byte[] byteImg = Files.readAllBytes(Paths.get(filename));
-            BufferedImage original = ImageIO.read(new ByteArrayInputStream(byteImg));
-            BufferedImage scaled = Scalr.resize(original,128);
-
-            ImageIO.write(scaled, "png", Files.newOutputStream(storageService.load(filename)));
-            */
+            String uriScaled = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/post")
+                    .path(filenameScaled)
+                    .toUriString();
 
             UserEntity newUser = UserEntity.builder()
                     .nick(createUserEntityDto.getNick())
@@ -54,13 +59,13 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
                     .password(passwordEncoder.encode(createUserEntityDto.getPassword()))
                     .fechaNacimiento(createUserEntityDto.getFechaNacimiento())
                     .publicProfile(createUserEntityDto.isPublicProfile())
-                    .urlAvatar(uri)
+                    .urlAvatar(uriScaled)
                     .build();
 
             return save(newUser);
 
         }else{
-            return null;
+            throw new RegisterException("No se ha podido generar el usuario.");
         }
     }
 
