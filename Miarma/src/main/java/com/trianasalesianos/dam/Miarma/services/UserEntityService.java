@@ -31,10 +31,11 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
     private final FileSystemStorageService storageService;
     private final PasswordEncoder passwordEncoder;
+    private final UserEntityRepository userEntityRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.repository.findByEmailContains(username).orElseThrow(()-> new UsernameNotFoundException(username + " no encontrado"));
+        return userEntityRepository.findByEmailContains(username).orElseThrow(()-> new UsernameNotFoundException(username + " no encontrado"));
     }
 
     public UserEntity register(CreateUserEntityDto createUserEntityDto, MultipartFile file) throws IOException {
@@ -71,9 +72,9 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
     public UserEntity findOne(UUID uuid, UserEntity userEntity){
 
-        boolean publicProfile = repository.getById(uuid).isPublicProfile();
-        if(userEntity.getListaSeguidores().contains(repository.getById(uuid)) || publicProfile ){
-            return repository.getById(uuid);
+        boolean publicProfile = userEntityRepository.getById(uuid).isPublicProfile();
+        if(userEntity.getListaSeguidores().contains(userEntityRepository.getById(uuid)) || publicProfile ){
+            return userEntityRepository.getById(uuid);
         }else{
             throw new NotPublicProfileException("El usuario que está intentado acceder no es público y no lo sigues.");
         }
@@ -82,7 +83,7 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
 
     public UserEntity modificarUsuario(UserEntity userEntity,CreateUserEntityDto createUserEntityDto,MultipartFile file){
 
-        UserEntity user = repository.getById(userEntity.getId());
+        UserEntity user = userEntityRepository.getById(userEntity.getId());
 
         user.setEmail(createUserEntityDto.getEmail());
         user.setFechaNacimiento(createUserEntityDto.getFechaNacimiento());
@@ -102,10 +103,10 @@ public class UserEntityService extends BaseService<UserEntity, UUID, UserEntityR
     }
 
     public UserEntity findByEmailContains(String email){
-        return repository.findByEmailContains(email).orElseThrow(()-> new EmailNotFoundException("No se ha encontrado el email"));
+        return userEntityRepository.findByEmailContains(email).orElseThrow(()-> new EmailNotFoundException("No se ha encontrado el email"));
     }
 
     public UserEntity findByNick(String nick){
-        return repository.findByNick(nick).orElseThrow(()-> new UsernameNotFoundException("No se ha encontrado el nick: "+nick));
+        return userEntityRepository.findByNickContains(nick).orElseThrow(()-> new UsernameNotFoundException("No se ha encontrado el nick: "+nick));
     }
 }
