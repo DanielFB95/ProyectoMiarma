@@ -4,7 +4,7 @@
 
 
 ## Descripción del Proyecto:
-### Nuestra API nos permitirá realizar diferentes consultas por medio del POSTMAN agregado en el proyecto, como mostrar/agregar/eliminar/editar diferentes objetos importados desde el inicio y o añadidos posteriormente
+### Nuestra API nos permitirá realizar diferentes consultas por medio del POSTMAN agregado en el proyecto, como mostrar/agregar/eliminar/editar diferentes objetos añadidos posteriormente.
 
 ## Entidades:
 ### <span style="color:yellow">Clase UserEntity:</span>
